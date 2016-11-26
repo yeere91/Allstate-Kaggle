@@ -4,14 +4,20 @@ import xgboost as xgb
 from sklearn.cross_validation import KFold
 from sklearn.metrics import mean_absolute_error
 
+# read in training set and test set
 train = pd.read_csv('input/train.csv')
 test = pd.read_csv('input/test.csv')
 
+# set loss to NaN because we're trying to predict it
 test['loss'] = np.nan
 joined = pd.concat([train, test])
 
-
+# no idea
 def logregobj(preds, dtrain):
+    '''
+    preds - prediction labels?
+    dtrain - training dataset
+    '''
     labels = dtrain.get_label()
     con = 2
     x = preds - labels
@@ -35,7 +41,9 @@ if __name__ == '__main__':
 
     train = joined[joined['loss'].notnull()]
     test = joined[joined['loss'].isnull()]
-
+    
+    # prevent any negative values
+    # 200 was found to perform well from forums
     shift = 200
     y = np.log(train['loss'] + shift)
     ids = test['id']
