@@ -12,14 +12,14 @@ test = pd.read_csv('input/test.csv')
 test['loss'] = np.nan
 joined = pd.concat([train, test])
 
-# no idea
+# no idea, loss function for XGBoost?
 def logregobj(preds, dtrain):
     '''
     preds - prediction labels?
     dtrain - training dataset
     '''
     labels = dtrain.get_label()
-    con = 2
+    con = 2 
     x = preds - labels
     grad = con * x / (np.abs(x) + con)
     hess = con ** 2 / (np.abs(x) + con) ** 2
@@ -38,7 +38,8 @@ if __name__ == '__main__':
 
     for column in cat_feature:
         joined[column] = pd.factorize(joined[column].values, sort=True)[0]
-
+    
+    # get the loss column for conversion
     train = joined[joined['loss'].notnull()]
     test = joined[joined['loss'].isnull()]
     
